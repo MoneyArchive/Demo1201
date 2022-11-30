@@ -36,10 +36,10 @@ jobs:
       - name: Build image on ACR
         uses: azure/CLI@7378ce2ca3c38b4b063feb7a4cbe384fef978055
         with:
-          azcliversion: 2.42.0
+          azcliversion: 2.29.1
           inlineScript: |
             az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
-            az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -f src/SimpleWeb
 
       # - name: Set AKS context
       #   id: set-context
