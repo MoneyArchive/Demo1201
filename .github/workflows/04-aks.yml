@@ -54,6 +54,11 @@ jobs:
         id: install-kubectl
         uses: azure/setup-kubectl@v3
 
+      # Deploy the Docker image to the IKS cluster
+      - name: Deploy to IKS
+        run: |
+          kubectl create secret docker-registry pullsecret --docker-server=https://ghcr.io/ --docker-username=notneeded--docker-password=${{ secrets.GHCR_PAT }}
+
       - name: Deploy to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
