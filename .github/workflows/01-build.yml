@@ -16,4 +16,4 @@ jobs:
 
       - name: Build the Docker image
         working-directory: src/SimpleWeb
-        run: docker build . --file Dockerfile --tag my-app-dotnet:$(date +%s)
+        run: docker build . --file Dockerfile --tag simpleweb:$(date +%s) , simpleweb:latest
