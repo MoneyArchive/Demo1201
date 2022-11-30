@@ -25,4 +25,4 @@ jobs:
           push: false
           tags: |
             simpleweb:latest
-            simpleweb:$(date +%s)
+            simpleweb:{{date 'YYYYMMDDHHmmSS'}}
