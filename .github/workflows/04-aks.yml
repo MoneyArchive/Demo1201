@@ -39,7 +39,7 @@ jobs:
           azcliversion: 2.29.1
           inlineScript: |
             az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
-            az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -f src/SimpleWeb
+            az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }} src/SimpleWeb
 
       # - name: Set AKS context
       #   id: set-context
