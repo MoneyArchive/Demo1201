@@ -35,7 +35,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} src/SimpleWeb
+          az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} ./src/SimpleWeb
 
       # - name: Set AKS context
       #   id: set-context
