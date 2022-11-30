@@ -26,4 +26,3 @@ jobs:
           tags: |
             simpleweb:latest
             simpleweb:${{ github.sha }}
-            simpleweb:${{ date }}
