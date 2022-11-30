@@ -25,4 +25,5 @@ jobs:
           push: false
           tags: |
             simpleweb:latest
-            simpleweb:{{date 'YYYYMMDDHHmmSS'}}
+            simpleweb:${{ github.sha }}
+            simpleweb:${{ date }}
