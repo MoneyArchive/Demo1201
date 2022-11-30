@@ -8,15 +8,14 @@ on:
   workflow_dispatch:
 
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: lettucebo/demo1201
+  IMAGE_NAME: simpleweb
   # IMAGE_NAME: ${{ github.repository }} # returns HoussemDellai/github-actions-course : problem with uppercase
   IMAGE_TAG: latest #1.0.${{ github.run_number }} # GITHUB_RUN_NUMBER }}
 
   CLUSTER_NAME: lab05c-aks-slu
   RESOURSE_GROUP: AZ204-1128
+  AZURE_CONTAINER_REGISTRY: lab05bacrslu
+  REGISTRY_URL: lab05bacrslu.azurecr.io
 
 jobs:
   deploy-aks:
@@ -28,44 +27,43 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Login against a Docker registry
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@v2.1.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Azure login
         id: login
         uses: azure/login@v1.4.3
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set AKS context
-        id: set-context
-        uses: azure/aks-set-context@v3
+      - name: Build image on ACR
+        uses: azure/CLI@7378ce2ca3c38b4b063feb7a4cbe384fef978055
         with:
-          resource-group: '${{ env.RESOURSE_GROUP }}' 
-          cluster-name: '${{ env.CLUSTER_NAME }}'
+          azcliversion: 2.42.0
+          inlineScript: |
+            az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
+            az acr build -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:latest -t ${{ env.REGISTRY_URL }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      - name: Setup kubectl
-        id: install-kubectl
-        uses: azure/setup-kubectl@v3
+      # - name: Set AKS context
+      #   id: set-context
+      #   uses: azure/aks-set-context@v3
+      #   with:
+      #     resource-group: '${{ env.RESOURSE_GROUP }}' 
+      #     cluster-name: '${{ env.CLUSTER_NAME }}'
 
-      # Deploy the Docker image to the IKS cluster
-      - name: Deploy to IKS
-        run: |
-          kubectl create secret docker-registry pullsecret --docker-server=https://ghcr.io/ --docker-username=notneeded--docker-password=${{ secrets.GHCR_PAT }}
+      # - name: Setup kubectl
+      #   id: install-kubectl
+      #   uses: azure/setup-kubectl@v3
 
-      - name: Deploy to AKS
-        id: deploy-aks
-        uses: Azure/k8s-deploy@v4
-        with:
-          namespace: 'default'
-          manifests: |
-             manifests/deployment.yml
-             manifests/service.yml
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          pull: true 
+      # # Deploy the Docker image to the IKS cluster
+      # - name: Deploy to IKS
+      #   run: |
+      #     kubectl create secret docker-registry pullsecret --docker-server=https://ghcr.io/ --docker-username=notneeded--docker-password=${{ secrets.GHCR_PAT }}
+
+      # - name: Deploy to AKS
+      #   id: deploy-aks
+      #   uses: Azure/k8s-deploy@v4
+      #   with:
+      #     namespace: 'default'
+      #     manifests: |
+      #        manifests/deployment.yml
+      #        manifests/service.yml
+      #     images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      #     pull: true 
