@@ -1,0 +1,15 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file src/SimpleWeb/Dockerfile --tag simple1201:$(date +%s) --tag simple1201:latest
