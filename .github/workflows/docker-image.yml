@@ -12,4 +12,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
+      working-directory: src/SimpleWeb
       run: docker build . --file src/SimpleWeb/Dockerfile --tag simple1201:$(date +%s) --tag simple1201:latest
