@@ -14,15 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Build the Docker image
-      #   working-directory: src/SimpleWeb
-      #   run: docker build . --file Dockerfile --tag simpleweb:$(date +%s) --tag simpleweb:latest
-
       - name: Build the Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: src/SimpleWeb
-          push: false
-          tags: |
-            simpleweb:latest
-            simpleweb:${{ github.sha }}
+        working-directory: src/SimpleWeb
+        run: docker build . --file Dockerfile --tag simpleweb:${{ github.sha }} --tag simpleweb:latest
+
+      # - name: Build the Docker image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: src/SimpleWeb
+      #     push: false
+      #     tags: |
+      #       simpleweb:latest
+      #       simpleweb:${{ github.sha }}

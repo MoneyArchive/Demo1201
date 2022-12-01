@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_CONTAINER_REGISTRY: "lab05bacrslu"
+  AZURE_CONTAINER_REGISTRY: "demo1201acr"
   CONTAINER_NAME: "simpleweb"
-  RESOURCE_GROUP: "AZ204-1128"
-  CLUSTER_NAME: "lab05c-aks-slu"
+  RESOURCE_GROUP: "Demo1201"
+  CLUSTER_NAME: "demo1201aks"
   DEPLOYMENT_MANIFEST_PATH: "manifests"
 
 jobs:
