@@ -1,0 +1,45 @@
+name: Docker Image CI
+
+on:
+  push:
+      branches: ["master"]
+      
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: lettucebo/demo1201
+  # IMAGE_NAME: ${{ github.repository }} # returns HoussemDellai/github-actions-course : problem with uppercase
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      working-directory: src/SimpleWeb
+      run: docker build . --file Dockerfile --tag simpleweb:${{ github.sha }} --tag simpleweb:latest
+      
+    # Login against a Docker registry
+      # https://github.com/docker/login-action
+    - name: Log into registry ${{ env.REGISTRY }}
+      uses: docker/login-action@v2.1.0
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        context: src/SimpleWeb
+        push: true
+        tags: |
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        labels: ${{ steps.meta.outputs.labels }}
