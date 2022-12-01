@@ -1,7 +1,7 @@
-apiVersion : apps/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simpleweb 
+  name: simpleweb
 spec:
   replicas: 1
   selector:
@@ -10,10 +10,10 @@ spec:
   template:
     metadata:
       labels:
-        app: simpleweb 
+        app: simpleweb
     spec:
       containers:
-        - name: simpleweb 
-          image: demo0903.azurecr.io/simpleweb
+        - name: simpleweb
+          image: demo1201acr.azurecr.io/simpleweb
           ports:
-          - containerPort: 80
+            - containerPort: 80
