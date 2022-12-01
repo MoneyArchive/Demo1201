@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: simpleweb
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: simpleweb
@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: simpleweb
-          image: demo1201acr.azurecr.io/simpleweb
+          image: ghcr.io/lettucebo/demo1201
           ports:
             - containerPort: 80
